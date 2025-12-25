@@ -1,11 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PhotoboothController;
+use App\Http\Controllers\PotobutController;
 
 // Landing page
 Route::view('/', 'welcome')->name('welcome');
 
-Route::get('/photobooth', [PhotoboothController::class, 'index'])->name('photobooth.index');
-Route::post('/photobooth', [PhotoboothController::class, 'store'])->name('photobooth.store');
-Route::get('/photobooth/history', [PhotoboothController::class, 'history'])->name('photobooth.history');
+// Pilih layout step (UI only)
+Route::view('/pilih-layout', 'pilih-layout')->name('pilih-layout');
+
+// Mode step (Snap or Select)
+Route::view('/mode', 'mode')->name('mode');
+
+Route::get('/potobut', [PotobutController::class, 'index'])->name('potobut.index');
+Route::post('/potobut', [PotobutController::class, 'store'])->name('potobut.store');
+Route::get('/potobut/history', [PotobutController::class, 'history'])->name('potobut.history');
