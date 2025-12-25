@@ -34,3 +34,18 @@
         transform: scale(.9);
     }
 }
+
+[data-aos] {
+    opacity: 0;
+    transform: translateY(8px) scale(1);
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(.22,.9,.37,1);
+    transition-duration: 1100ms;
+}
+
+[data-aos].aos-animate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.aos-init { will-change: opacity, transform; }
