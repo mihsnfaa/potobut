@@ -1,36 +1,70 @@
-# Potobut — Simple Photobooth UI
+# 📸 Potobut — Simple Photobooth UI
 
-Potobut is a lightweight photobooth UI built with Laravel and modern frontend tooling. It focuses on a soft, pastel aesthetic and a smooth step-by-step flow: Welcome → Pilih Layout → Mode → Poto → Edit.
+**Potobut** is a lightweight web-based photobooth UI built with **Laravel** and modern frontend tooling.  
+It is designed with a **soft pastel**, **minimalist**, and **mobile-first** approach, providing a clear and smooth user flow:
 
-Highlights
-- Framework: Laravel (PHP)
-- Frontend: Vite + Tailwind CSS
-- Interactions: Vanilla JavaScript, AOS (Animate On Scroll)
-- Build tools: npm / Node.js
+**Welcome → Layout → Mode → Photo → Edit**
 
-Quick tech summary
-- Language: PHP (Laravel) and JavaScript
-- Styling: Tailwind CSS utility-first
-- Animations: AOS for subtle scroll/entry effects
-- Assets: managed by Vite (dev & production builds)
+---
 
-Getting started (dev)
-1. Install dependencies:
+## ✨ Preview Concept
 
-	npm install
-	composer install
+Potobut focuses on:
+- Clean and aesthetic UI
+- Simple and intuitive interactions
+- Lightweight performance without heavy UI libraries
 
-2. Run dev servers:
+Suitable for:
+- Web photobooth applications
+- UI/UX projects
+- Modern frontend experiments with Laravel
 
-	npm run dev
-	php artisan serve
+---
 
-Project goals
-- Provide an easy, mobile-first photobooth UI
-- Keep code simple, easily extensible, and Tailwind-driven
-- Minimal external UI libs — focus on performance and UX
+## 🚀 Highlights
 
-License
-This project follows permissive licensing for components used. Check composer.json and package.json for upstream licenses.
+- 🎨 Soft pastel UI with a modern feel  
+- 🧭 Clear step-by-step flow  
+- 📱 Mobile-first and responsive  
+- ⚡ Fast and lightweight (minimal external libraries)  
+- 🧩 Easy to extend for future features  
 
-Enjoy building with Potobut! ✨
+---
+
+## 🛠 Tech Stack
+
+### Backend
+- **Laravel (PHP)** — routing, views, and application structure
+
+### Frontend
+- **Vite** — modern asset bundler  
+- **Tailwind CSS** — utility-first styling  
+- **Vanilla JavaScript** — lightweight interactions  
+- **AOS (Animate On Scroll)** — subtle, non-intrusive animations  
+
+### Tooling
+- **npm / Node.js**  
+- **Composer**
+
+---
+
+## 🎯 Project Goals
+
+- Provide a simple and intuitive photobooth UI  
+- Focus on UX, performance, and design consistency  
+- Easy to customize and extend  
+- Stay lightweight without relying on heavy UI libraries  
+
+---
+
+## 🧩 Future Ideas (Optional)
+
+- Camera capture with real-time countdown  
+- Filters and frame editor  
+- Export and download photo results  
+- Local or session-based state between steps  
+
+---
+
+Thanks for checking out **Potobut**.  
+Made with ❤️ by **jey**
