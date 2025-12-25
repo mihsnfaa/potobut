@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class PhotoboothController extends Controller
+class PotobutController extends Controller
 {
     public function index()
     {
-        return view('photobooth.index');
+        return view('potobut.index');
     }
 
     public function store(Request $request)
@@ -42,6 +42,6 @@ class PhotoboothController extends Controller
         } else {
             $photos = Photo::all();
         }
-        return view('photobooth.history', compact('photos'));
+        return view('potobut.history', compact('photos'));
     }
 }

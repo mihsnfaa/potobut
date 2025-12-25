@@ -1,4 +1,4 @@
-/* Photobooth custom styles: animated gradient background and UI tweaks */
+/* potobut custom styles: animated gradient background and UI tweaks */
 
 /* Animated gradient background */
 body {
@@ -19,7 +19,7 @@ body {
 }
 
 /* Main panel styling */
-.photobooth-panel {
+.potobut-panel {
 	background: rgba(255,255,255,0.85);
 	backdrop-filter: blur(6px);
 	border-radius: .75rem;
@@ -44,7 +44,7 @@ body {
 
 /* Responsive tweaks */
 @media (max-width: 768px) {
-	.photobooth-panel { padding: 1rem; }
+	.potobut-panel { padding: 1rem; }
 }
 
 /* Photo strip / polaroid styles */
