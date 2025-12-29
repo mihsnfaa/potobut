@@ -4,13 +4,12 @@
 
 @section('content')
     @vite(['resources/js/mode.js'])
-    <div class="min-h-screen relative overflow-hidden bg-[#2b0505] text-white">
-        <div id="stars" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
+    <div class="min-h-screen relative overflow-hidden bg-transparent text-white">
 
         <main role="main"
             class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 text-center">
             <div class="w-full max-w-5xl mx-auto">
-                <div class="card-container bg-[#fff5f7] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
+                <div class="card-container bg-[#F8FAFC] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
                     data-aos="fade" data-aos-duration="900">
                     @php
                         $steps = ['Layout', 'Mode', 'Poto', 'Edit'];
@@ -27,7 +26,7 @@
                     <!-- Mode Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-6">
                         <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="400"
-                            class="mode-card cursor-pointer rounded-xl bg-red-100 text-[#2b0505] p-6 sm:p-8 shadow-sm border border-transparent transform transition duration-200 hover:shadow-lg hover:scale-[1.01] flex flex-col items-center justify-center space-y-4"
+                            class="mode-card cursor-pointer rounded-xl bg-red-100 text-[#0F172A] p-6 sm:p-8 shadow-sm border border-transparent transform transition duration-200 hover:shadow-lg hover:scale-[1.01] flex flex-col items-center justify-center space-y-4"
                             data-value="snap" tabindex="0">
                             <!-- camera icon -->
                             <div class="w-16 h-16 rounded-full bg-white/30 flex items-center justify-center">
@@ -44,7 +43,7 @@
                         </div>
 
                         <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="500"
-                            class="mode-card cursor-pointer rounded-xl bg-red-100 text-[#2b0505] p-6 sm:p-8 shadow-sm border border-transparent transform transition duration-200 hover:shadow-lg hover:scale-[1.01] flex flex-col items-center justify-center space-y-4"
+                            class="mode-card cursor-pointer rounded-xl bg-red-100 text-[#0F172A] p-6 sm:p-8 shadow-sm border border-transparent transform transition duration-200 hover:shadow-lg hover:scale-[1.01] flex flex-col items-center justify-center space-y-4"
                             data-value="select" tabindex="0">
                             <!-- gallery icon -->
                             <div class="w-16 h-16 rounded-full bg-white/30 flex items-center justify-center">

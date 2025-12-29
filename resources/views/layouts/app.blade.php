@@ -7,7 +7,7 @@
     <title>@yield('title', 'Potobut')</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/space-background.js'])
     @else
         <!-- Dev fallback when Vite build isn't present -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -15,8 +15,8 @@
     @endif
 </head>
 <body class="min-h-screen">
-        <main>
-            @yield('content')
-        </main>
+    <main>
+        @yield('content')
+    </main>
 </body>
 </html>

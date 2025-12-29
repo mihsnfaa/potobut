@@ -3,8 +3,7 @@
 @section('title', 'Potobut')
 
 @section('content')
-    <div class="min-h-screen relative overflow-hidden bg-[#2b0505] text-white">
-        <div id="stars" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
+    <div class="min-h-screen relative overflow-hidden bg-transparent text-white" data-theme="dark">
 
         <main role="main"
             class="relative z-10 flex flex-col items-center justify-center min-h-screen max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

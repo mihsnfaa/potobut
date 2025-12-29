@@ -4,13 +4,12 @@
 
 @section('content')
     @vite(['resources/js/pilih-layout.js'])
-    <div class="min-h-screen relative overflow-hidden bg-[#2b0505] text-white">
-        <div id="stars" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
+    <div class="min-h-screen relative overflow-hidden bg-transparent text-white">
 
         <main role="main"
             class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 text-center">
             <div class="w-full max-w-5xl mx-auto">
-                <div class="card-container bg-[#fff5f7] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
+                <div class="card-container bg-[#F8FAFC] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
                     data-aos="fade" data-aos-duration="900">
                     <!-- Horizontal Stepper (Layout, Mode, Poto, Edit) with labels under circles -->
                     @php
@@ -30,7 +29,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-6">
                             <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="400"
                                 data-aos-easing="ease-out-cubic" role="button" tabindex="0"
-                                class="layout-card cursor-pointer rounded-xl bg-white text-[#2b0505] p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
+                                class="layout-card cursor-pointer rounded-xl bg-white text-[#0F172A] p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
                                 data-value="2">
                                 <div class="mb-4">
                                     <!-- placeholder: two-photo layout (iconic, small) -->
@@ -44,7 +43,7 @@
 
                             <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="500"
                                 data-aos-easing="ease-out-cubic" role="button" tabindex="0"
-                                class="layout-card cursor-pointer rounded-xl bg-white text-[#2b0505] p-4 sm:p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
+                                class="layout-card cursor-pointer rounded-xl bg-white text-[#0F172A] p-4 sm:p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
                                 data-value="3">
                                 <div class="mb-4">
                                     <!-- placeholder: three-photo layout (iconic, small) -->
@@ -59,7 +58,7 @@
 
                             <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="600"
                                 data-aos-easing="ease-out-cubic" role="button" tabindex="0"
-                                class="layout-card cursor-pointer rounded-xl bg-white text-[#2b0505] p-4 sm:p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
+                                class="layout-card cursor-pointer rounded-xl bg-white text-[#0F172A] p-4 sm:p-6 shadow-sm border border-gray-200 transform transition duration-200 hover:-translate-y-1 flex flex-col"
                                 data-value="4">
                                 <div class="mb-4">
                                     <!-- placeholder: four-photo layout (iconic vertical strip) -->

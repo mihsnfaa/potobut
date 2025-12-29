@@ -3,7 +3,8 @@ import "aos/dist/aos.css";
 
 document.addEventListener("DOMContentLoaded", function () {
     const starsContainer = document.getElementById("stars");
-    if (starsContainer) {
+    // If Vanta is active we skip the legacy star generator to avoid visual overlap
+    if (starsContainer && !window._vantaFogInstance) {
         const STAR_COUNT = 120;
         for (let i = 0; i < STAR_COUNT; i++) {
             const s = document.createElement("span");

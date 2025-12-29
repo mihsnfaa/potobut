@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function(){
   // state
   let currentFilter = 'normal';
   let currentPattern = 'plain';
-  let currentBg = bgColor ? bgColor.value : '#fff5f7';
+  // default background for edit picker: Star Light Blue
+  let currentBg = bgColor ? bgColor.value : '#E0F2FE';
 
   function createPreview(imgSrc, idx, imgHeight){
     const wrap = document.createElement('div');
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function(){
     wrap.appendChild(img);
     // caption under each photo
     const cap = document.createElement('div');
-    cap.className = 'mt-2 text-xs text-[#2b0505] text-center font-medium';
+    cap.className = 'mt-2 text-xs text-[#0F172A] text-center font-medium';
     cap.style.paddingTop = '6px';
     cap.textContent = captionInput.value || '';
     wrap.appendChild(cap);
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function(){
       const composed = await composeStripCanvas();
       // draw caption onto composed canvas bottom area
       const ctx = composed.getContext('2d');
-      ctx.fillStyle = '#2b0505'; ctx.font = '28px system-ui, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#0F172A'; ctx.font = '28px system-ui, sans-serif'; ctx.textAlign = 'center';
       ctx.fillText((captionInput.value||''), composed.width/2, composed.height - 40);
       const link = document.createElement('a'); link.download = 'potobut.png'; link.href = composed.toDataURL('image/png'); link.click();
       try{ sessionStorage.removeItem('potobut_photos'); }catch(e){}

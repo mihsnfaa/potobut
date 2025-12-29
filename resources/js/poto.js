@@ -239,11 +239,11 @@ document.addEventListener('DOMContentLoaded', function(){
       // create overlay styled to match Potobut theme
       if(currentZoomOverlay) return;
       const overlay = document.createElement('div');
-      overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-[#2b0505]/80';
+      overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C2D]/80';
       overlay.style.backdropFilter = 'blur(3px)';
 
       const inner = document.createElement('div');
-      inner.className = 'relative bg-[#fff5f7] rounded-xl shadow-xl border border-white/20 p-4 max-w-[90vw] max-h-[90vh] flex items-center justify-center';
+      inner.className = 'relative bg-[#F8FAFC] rounded-xl shadow-xl border border-white/20 p-4 max-w-[90vw] max-h-[90vh] flex items-center justify-center';
 
       const img = document.createElement('img');
       img.src = src;
@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     for(let i=0;i<boxes;i++){
       const box = document.createElement('label');
-      box.className = 'flex flex-col items-center justify-center p-6 rounded-xl bg-red-100 text-[#2b0505] cursor-pointer border border-transparent';
+      box.className = 'flex flex-col items-center justify-center p-6 rounded-xl bg-red-100 text-[#0F172A] cursor-pointer border border-transparent';
       // stable placeholder (.slot-placeholder) so we can reliably replace it later
       box.innerHTML = '<input type="file" accept="image/*" class="hidden file-input" data-index="'+i+'">'
         + '<div class="w-full h-36 bg-white/60 rounded-lg flex items-center justify-center slot-placeholder"> <div class="text-red-400">+</div></div>'

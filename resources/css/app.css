@@ -49,3 +49,112 @@
 }
 
 .aos-init { will-change: opacity, transform; }
+
+/* Background container managed by JS canvas (legacy Vanta removed) */
+
+/* Space Blue palette variables */
+:root {
+    --cosmic-blue: #2563EB; /* primary */
+    --nebula-blue: #1E40AF; /* hover/emphasis */
+    --deep-space: #0B1C2D; /* dark backgrounds */
+    --galaxy-cyan: #38BDF8; /* highlights */
+    --star-light: #E0F2FE; /* soft backgrounds */
+    --card-white: #F8FAFC; /* card backgrounds */
+    --soft-gray: #E5E7EB; /* borders/dividers */
+    --text-dark: #0F172A; /* primary text */
+    --text-muted: #64748B; /* secondary text */
+    --nebula-purple: #7C3AED; /* accent */
+    --aurora-green: #22D3EE; /* accent */
+}
+
+/* Override common Tailwind red/pink utilities to Space Blue palette
+   This preserves existing classnames but remaps colors globally. */
+.bg-red-500 { background-color: var(--cosmic-blue) !important; }
+.hover\:bg-red-600:hover { background-color: var(--nebula-blue) !important; }
+.active\:bg-red-700:active { background-color: var(--nebula-blue) !important; }
+.focus\:ring-red-300:focus { box-shadow: 0 0 0 3px rgba(224,242,254,0.6) !important; }
+.bg-red-100 { background-color: var(--star-light) !important; }
+.text-red-700 { color: var(--text-muted) !important; }
+.text-red-600 { color: var(--text-dark) !important; }
+.text-red-500 { color: var(--cosmic-blue) !important; }
+.bg-red-200 { background-color: var(--soft-gray) !important; }
+.text-red-300 { color: var(--text-muted) !important; }
+.text-red-400 { color: var(--text-muted) !important; }
+
+/* Ring utilities remapped to Space Blue */
+.ring-red-500 { box-shadow: 0 0 0 4px rgba(37,99,235,0.12) !important; }
+.ring-red-300 { box-shadow: 0 0 0 3px rgba(224,242,254,0.6) !important; }
+.hover\:ring-red-100:hover { box-shadow: 0 0 0 3px rgba(224,242,254,0.25) !important; }
+
+/* Replace specific Tailwind/preset pink shadow with a soft cyan tint */
+.shadow-pink-50 { box-shadow: 0 1px 3px rgba(56,189,248,0.04), 0 1px 2px rgba(2,6,23,0.04) !important; }
+
+/* Replace explicit hex utility usages (Tailwind arbitrary colors) */
+[class*="bg-[#fff5f7]"] { background-color: var(--card-white) !important; }
+[class*="bg-[#fde2e2]"] { background-color: var(--star-light) !important; }
+[class*="bg-[#ffeedd]"] { background-color: var(--star-light) !important; }
+[class*="bg-[#ffd6d6]"] { background-color: var(--star-light) !important; }
+[class*="text-[#2b0505]"] { color: var(--text-dark) !important; }
+[class*="#2b0505"] { /* any reference to original deep red -> map to deep space */
+    background-color: var(--deep-space) !important;
+    color: var(--text-dark) !important;
+}
+
+/* Stepper specific remaps */
+.step-circle.bg-red-500 { background-color: var(--cosmic-blue) !important; color: #fff !important; }
+.step-line.bg-red-200, .w-8 .bg-red-200, .h-0\.5.bg-red-200 { background-color: var(--soft-gray) !important; }
+
+/* Buttons outline / secondary styles often use border/text red classes - remap to cosmic */
+.border-red-500 { border-color: var(--cosmic-blue) !important; }
+.text-red-500 { color: var(--cosmic-blue) !important; }
+.hover\:bg-red-600:hover { background-color: var(--nebula-blue) !important; }
+
+/* Generic utility fallbacks for any remaining red-* classes */
+[class*="red-500"] { color: var(--cosmic-blue) !important; }
+[class*="red-600"] { color: var(--nebula-blue) !important; }
+
+/* Ensure primary text and headings use Text Dark and muted text uses Text Muted */
+h1, h2, h3, h4, h5, h6 { color: var(--text-dark); }
+.text-white { color: #ffffff; }
+.text-muted { color: var(--text-muted); }
+
+/* Card & container defaults */
+.card-container, .card { background-color: var(--card-white) !important; border-color: var(--soft-gray) !important; color: var(--text-dark) !important; }
+
+/* Interactive selection hover & active borders */
+.layout-card:hover, .pattern-option:hover, .filter-btn:hover { border-color: var(--galaxy-cyan) !important; cursor: pointer; }
+.layout-card.active, .pattern-option.active, .filter-btn.active { border-color: var(--cosmic-blue) !important; box-shadow: 0 0 12px rgba(56,189,248,0.08) !important; }
+
+/* Inputs and focus */
+.border-white\/20 { border-color: rgba(255,255,255,0.2) !important; }
+.border { border-color: var(--soft-gray) !important; }
+input:focus, .focus\:border-red-500:focus { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); border-color: var(--cosmic-blue) !important; }
+
+/* Improve button visibility and semantics without changing structure */
+/* Primary buttons (existing `bg-red-500`) */
+.bg-red-500 { color: #ffffff !important; }
+[data-theme="dark"] .bg-red-500 { /* slightly stronger highlight on dark hero */
+    background-color: var(--cosmic-blue) !important;
+    box-shadow: 0 8px 20px rgba(37,99,235,0.12) !important;
+}
+
+/* Secondary / outline buttons: map current border/text red classes to Cosmic Blue */
+.border-red-200.text-red-700, .border-red-200.text-red-700:hover, button.border-red-200.text-red-700 {
+    border-color: var(--cosmic-blue) !important;
+    color: var(--cosmic-blue) !important;
+    background-color: transparent !important;
+}
+.border-red-200.text-red-700:hover { background-color: var(--star-light) !important; }
+
+/* Ensure small disabled/ghost buttons remain legible */
+.bg-white\/20 { background-color: rgba(248,250,252,0.2) !important; }
+.text-red-300 { color: var(--text-muted) !important; }
+
+/* Ensure any inline 'text-red-600' used for icons or emphasized text maps to Cosmic Blue for visibility */
+.text-red-600 { color: var(--cosmic-blue) !important; }
+
+/* For preview placeholders, use muted blue tint instead of red tint */
+.text-red-400 { color: rgba(6,21,57,0.35) !important; }
+
+/* If some buttons still use ring classes, ensure ring color is Space Blue */
+.focus\:ring-red-300:focus { box-shadow: 0 0 0 4px rgba(37,99,235,0.14) !important; }

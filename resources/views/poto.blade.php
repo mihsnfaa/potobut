@@ -4,13 +4,12 @@
 
 @section('content')
     @vite(['resources/js/poto.js'])
-    <div class="min-h-screen relative overflow-hidden bg-[#2b0505] text-white">
-        <div id="stars" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
+    <div class="min-h-screen relative overflow-hidden bg-transparent text-white">
 
         <main role="main"
             class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 text-center">
             <div class="w-full max-w-5xl mx-auto">
-                <div class="card-container bg-[#fff5f7] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
+                <div class="card-container bg-[#F8FAFC] rounded-2xl p-6 sm:p-8 lg:p-12 shadow-xl border border-white/20 flex flex-col space-y-6 sm:space-y-8 md:space-y-10"
                     data-aos="fade" data-aos-duration="900">
                     @php
                         $steps = ['Layout', 'Mode', 'Poto', 'Edit'];
