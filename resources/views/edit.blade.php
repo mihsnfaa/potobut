@@ -25,9 +25,6 @@
                             <div id="previewStrip" class="w-full max-w-xs flex flex-col items-center space-y-3 p-4 rounded-lg shadow-sm border border-white/10 bg-white/50"></div>
                             <!-- dedicated holder for composed thumbnail (keeps slot previews intact) -->
                             <div id="composedPreviewHolder" class="w-full max-w-xs mt-4 flex items-center justify-center"></div>
-                            <div id="captionArea" class="mt-3 text-center">
-                                <div id="captionText" class="text-sm text-[#0F172A] font-medium"></div>
-                            </div>
                         </div>
 
                         <!-- Controls panel -->

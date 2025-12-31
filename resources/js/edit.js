@@ -1,3 +1,5 @@
+import './strip-compositor';
+
 document.addEventListener('DOMContentLoaded', function(){
   const previewStrip = document.getElementById('previewStrip');
   const captionInput = document.getElementById('captionInput');
@@ -68,10 +70,12 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function renderStrip(){
+    // Render only the composed strip into #previewStrip.
+    // Clear any previous children and let renderCompositePreview inject the composed image.
     previewStrip.innerHTML = '';
     previewStrip.style.background = currentBg;
-    // apply pattern as background-image if needed
     previewStrip.style.backgroundImage = '';
+    // patterns and background color only influence the editor preview background, not the composed template
     if(currentPattern === 'polka'){
       previewStrip.style.backgroundImage = 'radial-gradient(circle at 10px 10px, rgba(0,0,0,0.04) 2px, transparent 3px)';
       previewStrip.style.backgroundSize = '24px 24px';
@@ -82,62 +86,49 @@ document.addEventListener('DOMContentLoaded', function(){
       previewStrip.style.backgroundSize = '16px 16px';
     }
 
-    // choose image height based on layout count (portrait proportions)
-    const heightMap = {2:360, 3:240, 4:180};
-    const imgHeight = heightMap[layoutCount] || 240;
-    for(let i=0;i<layoutCount;i++){
-      const src = photos[i] || null;
-      if(src){
-        const node = createPreview(src, i, imgHeight);
-        // apply current filter
-        applyFilterToElement(node, currentFilter);
-        previewStrip.appendChild(node);
-      } else {
-        // placeholder empty slot sized consistently
-        const ph = document.createElement('div');
-        ph.className = 'w-full rounded-lg bg-white/60 border border-white/10 flex items-center justify-center text-red-300 flex-shrink-0';
-        ph.style.height = imgHeight + 'px';
-        ph.textContent = '+';
-        previewStrip.appendChild(ph);
-      }
-    }
-    // caption (we'll show caption below composed preview)
-    captionText.textContent = '';
+    // caption text will be managed by composed preview (guard element may be removed)
+    if(captionText) captionText.textContent = '';
 
-    // render composed strip preview image (small) but don't replace slot previews
+    // Render composed preview into previewStrip (only one preview element)
     renderCompositePreview();
   }
 
+  // Prepare an image with filter applied and return a dataURL image source
+  async function prepareImageWithFilter(src, filter){
+    // load source
+    const img = await new Promise((res, rej)=>{ const i=new Image(); i.crossOrigin='anonymous'; i.onload=()=>res(i); i.onerror=()=>rej(new Error('img load')); i.src = src; });
+    // draw into offscreen canvas at natural size and apply filter
+    const cw = img.naturalWidth || img.width || 800;
+    const ch = img.naturalHeight || img.height || 600;
+    const c = document.createElement('canvas'); c.width = cw; c.height = ch; const cx = c.getContext('2d');
+    switch(filter){
+      case 'warm': cx.filter = 'sepia(0.25) contrast(1.05) saturate(1.1)'; break;
+      case 'cool': cx.filter = 'brightness(0.98) contrast(1.02) hue-rotate(200deg)'; break;
+      case 'vintage': cx.filter = 'sepia(0.5) contrast(1.05) saturate(0.9)'; break;
+      case 'bw': cx.filter = 'grayscale(1) contrast(1.05)'; break;
+      default: cx.filter = 'none';
+    }
+    cx.drawImage(img, 0, 0, cw, ch);
+    cx.filter = 'none';
+    return c.toDataURL('image/png');
+  }
+
+  // Use StripComposer.composeCanvas to produce composition using template PNG
   async function composeStripCanvas(outWidth){
-    // load strip template matching layout
-    const stripSrc = `/templates/strip-${layoutCount}.png`;
-    const stripImg = await new Promise((res,rej)=>{ const i=new Image(); i.crossOrigin='anonymous'; i.onload=()=>res(i); i.onerror=()=>rej(new Error('strip load')); i.src = stripSrc; });
-    const canvas = document.createElement('canvas');
-    canvas.width = stripImg.naturalWidth; canvas.height = stripImg.naturalHeight;
-    const ctx = canvas.getContext('2d');
-
-    // compute layout for slots (relative margins)
-    const marginX = Math.round(canvas.width * 0.06);
-    const marginY = Math.round(canvas.height * 0.06);
-    const spacing = Math.max(8, Math.round(canvas.height * 0.02));
-    const slotW = canvas.width - marginX*2;
-    const slotH = Math.floor((canvas.height - marginY*2 - spacing*(layoutCount-1)) / layoutCount);
-
-    // draw photos first into slots
-    let y = marginY;
-    for(let i=0;i<layoutCount;i++){
-      const src = photos[i];
-      if(src){ await drawImageToCanvas(ctx, src, marginX, y, slotW, slotH, currentFilter); }
-      y += slotH + spacing;
+    // For composition, prepare photos with filters applied
+    const cfg = window.StripComposer && window.StripComposer.STRIP_CONFIG ? window.StripComposer.STRIP_CONFIG : null;
+    const needed = (cfg && cfg[layoutCount]) ? cfg[layoutCount].slots.length : layoutCount;
+    const limited = photos.slice(0, needed);
+    const prepared = [];
+    for(let i=0;i<limited.length;i++){
+      const p = limited[i];
+      if(!p) { prepared.push(null); continue; }
+      try{ const dataUrl = await prepareImageWithFilter(p, currentFilter); prepared.push(dataUrl); }catch(e){ prepared.push(p); }
     }
 
-    // overlay the strip artwork on top so frames/decals show through
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.drawImage(stripImg, 0, 0, canvas.width, canvas.height);
-
-    // if outWidth requested, produce scaled canvas
-    if(outWidth && outWidth < canvas.width){ const s = outWidth / canvas.width; const out = document.createElement('canvas'); out.width = outWidth; out.height = Math.round(canvas.height * s); const octx = out.getContext('2d'); octx.drawImage(canvas,0,0,out.width,out.height); return out; }
-    return canvas;
+    const composed = await window.StripComposer.composeCanvas(layoutCount, prepared, captionInput.value || '');
+    if(outWidth && outWidth < composed.width){ const s = outWidth / composed.width; const out = document.createElement('canvas'); out.width = outWidth; out.height = Math.round(composed.height * s); const octx = out.getContext('2d'); octx.drawImage(composed,0,0,out.width,out.height); return out; }
+    return composed;
   }
 
   async function renderCompositePreview(){
@@ -145,19 +136,12 @@ document.addEventListener('DOMContentLoaded', function(){
     try{
       const previewCanvas = await composeStripCanvas(360);
       const img = document.createElement('img'); img.src = previewCanvas.toDataURL('image/png'); img.className = 'rounded-md shadow-sm'; img.style.maxWidth = '100%';
-      // keep original slot previews; place composed thumbnail into dedicated holder in the blade
-      let holder = document.getElementById('composedPreviewHolder');
-      if(!holder){
-        // fallback to legacy container appended inside previewStrip (rare)
-        let container = document.getElementById('composedPreviewContainer');
-        if(!container){ container = document.createElement('div'); container.id = 'composedPreviewContainer'; container.className = 'mt-4 w-full flex items-center justify-center'; previewStrip.appendChild(container); }
-        container.innerHTML = '';
-        container.appendChild(img);
-      } else {
-        holder.innerHTML = '';
-        holder.appendChild(img);
-      }
-      // caption below
+      // inject composed preview directly into #previewStrip (single preview)
+      previewStrip.innerHTML = '';
+      previewStrip.appendChild(img);
+      // remove any legacy composed preview holder to avoid duplicate placeholder
+      const holder = document.getElementById('composedPreviewHolder'); if(holder && holder.parentNode) holder.parentNode.removeChild(holder);
+      // update caption below (UI element)
       const cap = document.getElementById('captionText'); if(cap) cap.textContent = captionInput.value || '';
     }catch(e){ /* strip not found or compose failed — fallback to simple strip */ }
   }
@@ -181,59 +165,46 @@ document.addEventListener('DOMContentLoaded', function(){
   presets.forEach(b=> b.addEventListener('click', (e)=>{ currentBg = e.target.getAttribute('data-color'); if(bgColor) bgColor.value = currentBg; renderStrip(); }));
   patternOptions.forEach(p=> p.addEventListener('click', (e)=>{ currentPattern = p.getAttribute('data-pattern'); patternOptions.forEach(x=>{ x.classList.remove('ring-2','ring-red-500','shadow-md'); }); p.classList.add('ring-2','ring-red-500','shadow-md'); renderStrip(); }));
   filterBtns.forEach(b=> b.addEventListener('click', (e)=>{ currentFilter = b.getAttribute('data-filter'); filterBtns.forEach(x=>{ x.classList.remove('ring-2','ring-red-500','shadow-md'); }); b.classList.add('ring-2','ring-red-500','shadow-md'); // smooth transition
-    // apply to existing nodes
-    const nodes = previewStrip.querySelectorAll('div');
-    nodes.forEach(n=> applyFilterToElement(n, currentFilter));
+    // re-render composed preview to reflect new filter
+    renderStrip();
   }));
 
   captionInput.addEventListener('input', (e)=>{
     const v = e.target.value || '';
     if(v.length > 10){ e.target.value = v.slice(0,10); }
     captionCount.textContent = String((e.target.value||'').length);
-    // update caption under each preview node
-    const caps = previewStrip.querySelectorAll('div > div.mt-2');
-    caps.forEach(c=> c.textContent = e.target.value);
-    captionText.textContent = '';
+    // update composed preview caption
+    if(captionText) captionText.textContent = '';
+    renderStrip();
   });
 
   // Download: compose a simple vertical canvas
   btnDownload.addEventListener('click', async function(){
+    // strict validation: photos array length must exactly match layoutCount
+    const provided = (photos || []).filter(Boolean).length;
+    if(provided !== layoutCount){
+      alert('Please provide ' + layoutCount + ' photos before downloading.');
+      return;
+    }
+
     try{
-      const composed = await composeStripCanvas();
-      // draw caption onto composed canvas bottom area
-      const ctx = composed.getContext('2d');
-      ctx.fillStyle = '#0F172A'; ctx.font = '28px system-ui, sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText((captionInput.value||''), composed.width/2, composed.height - 40);
-      const link = document.createElement('a'); link.download = 'potobut.png'; link.href = composed.toDataURL('image/png'); link.click();
+      // prepare photos with filters applied before download
+      const cfg2 = window.StripComposer && window.StripComposer.STRIP_CONFIG ? window.StripComposer.STRIP_CONFIG : null;
+      const needed = (cfg2 && cfg2[layoutCount]) ? cfg2[layoutCount].slots.length : layoutCount;
+      const limited = photos.slice(0, needed);
+      const prepared = [];
+      for(let i=0;i<limited.length;i++){
+        const p = limited[i];
+        if(!p) { prepared.push(null); continue; }
+        try{ const dataUrl = await prepareImageWithFilter(p, currentFilter); prepared.push(dataUrl); }catch(e){ prepared.push(p); }
+      }
+
+      await window.StripComposer.composeAndDownload(layoutCount, prepared, captionInput.value || '', 'potobut-strip.png');
       try{ sessionStorage.removeItem('potobut_photos'); }catch(e){}
-    }catch(err){ console.error('compose/download failed', err); }
+    }catch(err){ console.error('compose/download failed', err); alert('Failed to create strip.'); }
   });
 
-  async function drawImageToCanvas(ctx, src, x, y, w, h, filter){
-    return new Promise((resolve)=>{
-      const img = new Image(); img.crossOrigin = 'anonymous'; img.onload = function(){
-        // apply filter
-        switch(filter){
-          case 'warm': ctx.filter = 'sepia(0.25) contrast(1.05) saturate(1.1)'; break;
-          case 'cool': ctx.filter = 'brightness(0.98) contrast(1.02) hue-rotate(200deg)'; break;
-          case 'vintage': ctx.filter = 'sepia(0.5) contrast(1.05) saturate(0.9)'; break;
-          case 'bw': ctx.filter = 'grayscale(1) contrast(1.05)'; break;
-          default: ctx.filter = 'none';
-        }
-        // ensure transform reset (no mirror)
-        ctx.setTransform(1,0,0,1,0,0);
-        // cover fit: draw image proportionally to cover box
-        const ratio = Math.max(w / img.width, h / img.height);
-        const nw = img.width * ratio; const nh = img.height * ratio;
-        const dx = x - (nw - w)/2; const dy = y - (nh - h)/2;
-        ctx.drawImage(img, dx, dy, nw, nh);
-        ctx.filter = 'none';
-        resolve();
-      };
-      img.onerror = ()=> resolve();
-      img.src = src;
-    });
-  }
+  // old per-slot draw helper removed — composition is handled by StripComposer
 
   btnBack.addEventListener('click', ()=>{ if(window.history.length>1) window.history.back(); else window.location.href = '/poto'; });
   btnAgain.addEventListener('click', ()=>{ // reset to start (layout): clear flow state and navigate
